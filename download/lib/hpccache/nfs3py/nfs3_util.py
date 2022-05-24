@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# lib/avere/nfs3py/nfs3_util.py
+# lib/hpccache/nfs3py/nfs3_util.py
 #
 # Copyright (c) Microsoft Corporation. All rights reserved.
 #
@@ -12,7 +12,7 @@ import pprint
 import sys
 import time
 
-import avere.nfs3py.nfs3 as nfs3
+import hpccache.nfs3py.nfs3 as nfs3
 
 class LoggerState(nfs3.LoggerState):
     LOGGER_NAME_DEFAULT = 'hpccache.nfs3_util'

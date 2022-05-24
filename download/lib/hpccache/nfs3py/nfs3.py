@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# lib/avere/nfs3py/nfs3.py
+# lib/hpccache/nfs3py/nfs3.py
 #
 # Copyright (c) Microsoft Corporation. All rights reserved.
 #
@@ -19,8 +19,8 @@ import os
 import struct
 import time
 
-import avere.nfs3py.rpc_rfc1057 as rpc_rfc1057
-from avere.nfs3py.rpc_rfc1057 import (NULLargs,
+import hpccache.nfs3py.rpc_rfc1057 as rpc_rfc1057
+from hpccache.nfs3py.rpc_rfc1057 import (NULLargs,
                                       NULLres,
                                       ONCRPCargs,
                                       ONCRPCres,
@@ -95,7 +95,7 @@ FSF3_CANSETTIME  = 0x0010 # pylint: disable=bad-whitespace
 
 
 class LoggerState(rpc_rfc1057.LoggerState):
-    LOGGER_NAME_DEFAULT = 'avere.nfs3'
+    LOGGER_NAME_DEFAULT = 'hpccache.nfs3'
 
     @classmethod
     def logger_set(cls, logger):

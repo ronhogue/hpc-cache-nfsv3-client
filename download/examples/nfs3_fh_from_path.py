@@ -10,7 +10,7 @@ Convert a path to a filehandle
 import argparse
 import sys
 
-import avere.nfs3py.nfs3_util as nfs3_util
+import hpccache.nfs3py.nfs3_util as nfs3_util
 
 class LoggerState(nfs3_util.LoggerState):
     LOGGER_NAME_DEFAULT = __file__

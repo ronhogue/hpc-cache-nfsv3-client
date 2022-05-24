@@ -80,8 +80,8 @@ import threading
 import sys
 import time
 
-import avere.nfs3py.nfs3 as nfs3
-import avere.nfs3py.nfs3_util as nfs3_util
+import hpccache.nfs3py.nfs3 as nfs3
+import hpccache.nfs3py.nfs3_util as nfs3_util
 
 RECHECK_SECONDS=0.25
 

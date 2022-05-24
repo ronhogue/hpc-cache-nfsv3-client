@@ -11,8 +11,8 @@ import argparse
 import os
 import sys
 
-import avere.nfs3py.nfs3 as nfs3
-import avere.nfs3py.nfs3_util as nfs3_util
+import hpccache.nfs3py.nfs3 as nfs3
+import hpccache.nfs3py.nfs3_util as nfs3_util
 
 exc_info_err = nfs3_util.exc_info_err
 

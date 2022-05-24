@@ -18,9 +18,9 @@ import time
 import traceback
 import uuid
 
-import avere.nfs3py.nfs3 as nfs3
-import avere.nfs3py.nfs3_util as nfs3_util
-import avere.nfs3py.rpc_rfc1057 as rpc_rfc1057
+import hpccache.nfs3py.nfs3 as nfs3
+import hpccache.nfs3py.nfs3_util as nfs3_util
+import hpccache.nfs3py.rpc_rfc1057 as rpc_rfc1057
 
 exc_info_err = nfs3_util.exc_info_err
 
