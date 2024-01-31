@@ -3,9 +3,10 @@
 # setup.py
 #
 # Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT license.
 #
 '''
-setuptools script to generate an installable module for Avere-nfs3py
+setuptools script to generate an installable module for hpccache-nfs3py
 '''
 
 import logging
@@ -20,20 +21,21 @@ except ImportError:
     # but we do not care.
     pass
 
-NAME = 'Avere-nfs3py'
+NAME = 'hpccache-nfs3py'
 
-BINFILES = (os.path.join('bin', 'nfs3_client_test.py'),
-            os.path.join('bin', 'nfs3_fh_from_path.py'),
-            os.path.join('bin', 'nfs3_path_from_fh.py'),
+BINFILES = (os.path.join('examples', 'nfs3_client_test.py'),
+            os.path.join('examples', 'nfs3_fh_from_path.py'),
+            os.path.join('examples', 'nfs3_path_from_fh.py'),
+            os.path.join('examples', 'flush_file.py'),
            )
 
 # Files from lib/ to include in the .tgz artifact
-LIBFILES = (os.path.join('avere', 'nfs3py', 'nfs3.py'),
-            os.path.join('avere', 'nfs3py', 'nfs3_util.py'),
-            os.path.join('avere', 'nfs3py', 'rpc_rfc1057.py'),
+LIBFILES = (os.path.join('lib', 'hpccache', 'nfs3py', 'nfs3.py'),
+            os.path.join('lib', 'hpccache', 'nfs3py', 'nfs3_util.py'),
+            os.path.join('lib', 'hpccache', 'nfs3py', 'rpc_rfc1057.py'),
            )
 
-DESC_SHORT = 'Avere NFS3 Python client'
+DESC_SHORT = 'HPC Cache NFS3 Python client'
 DESC_LONG = "The %s is compliant with RFC 1813" % DESC_SHORT
 
 requirements = []
@@ -67,7 +69,7 @@ def main(*args):
                                  ],
                      description=DESC_SHORT,
                      install_requires=requirements,
-                     keywords='Avere Microsoft',
+                     keywords='HPC Cache Microsoft',
                      long_description=DESC_LONG,
                      name=NAME,
                      # Leave out the specification so that we can use

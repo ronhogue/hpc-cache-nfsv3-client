@@ -18,9 +18,13 @@ Clone this hpc-cache-nfsv3-client repository on the client (or clients) that wil
 
 This repository contains the necessary code libraries and a script named flush_file.py.
 
-The script requires a stable Python 3 distribution to run. You can set up your client by using either of these options:
+The script requires a stable Python 3 distribution to run. You have a variety of options for setting up the script and its libraries on your client machines:
 
-* Run the 'setup.py' file included in the repository to install and configure the needed software.
+* Use the 'setup.py' file included in the repository to install and configure the needed software. There are several methods to do this:
+
+  * Use ``python3 setup.py build`` to install libraries and create an executable script in the local directory.
+  * Use ``python3 setup.py install`` to install libraries and an executable script in the appropriate paths in ``/usr/local``.
+  * Use ``pip install .`` from the ``hpc-cache-nfsv3-client`` directory. (Other convenient software installers also can be used.)
 
 * Use the software included in the repository directly. Point your Python path to the downloaded repository location:
 
@@ -33,17 +37,51 @@ The script requires a stable Python 3 distribution to run. You can set up your c
 
 The script 'flush_file.py' tells the HPC Cache to write specific files back to the long-term storage system.
 
+You must stream the list of files to the script on stdin. Files can be specified individually, programmatically, or as a text document containing a newline-separated list of files. Read [Specify the files to write](#specify-the-files-to-write) for more information and examples.
+
 ```bash
-[user@hostname ~]$ python3 flush_file.py --help
-
-usage: flush_file.py [-h] [--threads THREADS] [--timeout TIMEOUT] [--sync] [--verbose] export server
-
-File Flush Utility
- ...
-
+$ cat *.txt | python3 flush_file.py <export_name> <server_IP>
 ```
 
-The [Usage](#usage) section below has details about how to use the script.
+Read the [Usage](#usage) section below for details about the required and optional parameters.
+
+## Specify the files to write
+
+``flush_file.py`` accepts one or more file paths, separated by new lines, on the standard input stream. There are a variety of ways to specify files using shell scripting. Here are some examples.
+
+* Pass a single file name:
+
+  ``echo "/outputdir/file1" | flush_file.py <export> <IP address>``
+
+* Pass a list of files to write:
+
+  ``cat flushlist | flush_file.py <export> <IP address>``
+  
+  In this example, "flushlist" is a text file with one file per line:
+
+  ```
+      /target1/testfile1
+      /target1/output/result.txt
+      /target1/output/schedule.sas
+  ```
+
+Each path specifies a single file. This utility does not support directory recursion and does not accept wildcard expressions.
+
+Remember to specify files using their paths in the HPC Cache namespace. The flush_file.py utility creates its own connection to the HPC Cache, it doesn't use the client's mount point.
+
+### Help with paths
+
+To clarify which path to use in the *export* value, this table lists the various local and virtual paths for an example file.
+
+The flush_file.py script mounts the HPC Cache system at ``/``. Even if you run flush_file.py from a client that has previously mounted the HPC Cache, the flush utility uses its own path, not the client's mount point.
+
+| Description | File path |
+|----------|-----------|
+|File that you want to write: | result/output3.txt|
+|File path on the compute client: | /mnt/cache/NAS_12_exp5/result/output3.txt|
+|Path on the HPC Cache: | /NAS_12_exp5/result/output3.txt|
+|Storage system export: | /export5|
+|Path to use in flush_file.py: | /NAS_12_exp5/result/output3.txt|
 
 ## Usage
 
@@ -53,9 +91,9 @@ The documentation here is based on the script's help file. Use the ``--help`` op
 
 This is the basic command:
 
-  ``flush_file.py [-h] [--threads`` *number-of-threads*``] [--timeout`` *time-in-seconds*``] [--sync] [--verbose]``*export* *server*
+  ``<stream of files to import> | flush_file.py [-h] [--threads`` *number-of-threads*``] [--timeout`` *time-in-seconds*``] [--sync] [--verbose]``*export* *server*
 
-Supply the file or files to write with the standard input stream. Read [Specify the files to write](##specify-the-files-to-write) for details.
+Supply the file or files to write with the standard input stream. Read [Specify the files to write](#specify-the-files-to-write) for details.
 
 ### Required parameters
 
@@ -113,65 +151,9 @@ Flush one particular file on the client (/testdir/testfile) to the export /1_1_1
 echo /testdir/testfile | python3 bin/flush_file.py /1_1_1_0 203.0.113.87
 ```
 
-## Specify the files to write
-
-``flush_file.py`` accepts one or more file paths, separated by new lines. There are a variety of ways to specify files using shell scripting. Here are some examples.
-
-* Pass a single file name:
-
-  ``echo "/outputdir/file1" | flush_file.py <export> <IP address>``
-
-* Pass a list of files to write:
-
-  ``cat flushlist | flush_file.py <export> <IP address>``
-  
-  In this example, "flushlist" is a text file with one file per line:
-
-  ```
-      /target1/testfile1
-      /target1/output/result.txt
-      /target1/output/schedule.sas
-  ```
-
-Each path specifies a single file. This utility does not support directory recursion and does not accept wildcard expressions.
-
-Remember to specify files using their paths in the HPC Cache namespace. The flush_file.py utility creates its own connection to the HPC Cache, it doesn't use the client's mount point.
-
-### Help with paths
-
-To clarify which path to use in the *export* value, this table lists the various local and virtual paths for an example file.
-
-The flush_file.py script mounts the HPC Cache system at ``/``. Even if you run flush_file.py from a client that has previously mounted the HPC Cache, the flush utility uses its own path, not the client's mount point.
-
-| Description | File path |
-|----------|-----------|
-|File that you want to write: | result/output3.txt|
-|File path on the compute client: | /mnt/cache/NAS_12_exp5/result/output3.txt|
-|Path on the HPC Cache: | /NAS_12_exp5/result/output3.txt|
-|Storage system export: | /export5|
-|Path to use in flush_file.py: | /NAS_12_exp5/result/output3.txt|
-
-
-
-**================ TEMPLATE CONTENT BELOW ================**
-
-***[ Do we need to keep these Contributing and/or Trademarks sections? ]***
-
-**Project template instructions**
-
-> This repo has been populated by an initial template to help get you started. Please
-> make sure to update the content to build a great experience for community-building.
-
-As the maintainer of this project, please make a few updates:
-
-- Improving this README.MD file to provide a great experience
-- Updating SUPPORT.MD with content about this project's support experience
-- Understanding the security reporting process in SECURITY.MD
-- Remove this section from the README 
-
 ## Contributing
 
-This project welcomes contributions and suggestions.  Most contributions require you to agree to a
+This project welcomes contributions and suggestions. Most contributions require you to agree to a
 Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
 the rights to use your contribution. For details, visit https://cla.opensource.microsoft.com.
 
@@ -185,8 +167,6 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 
 ## Trademarks
 
-This project may contain trademarks or logos for projects, products, or services. Authorized use of Microsoft 
-trademarks or logos is subject to and must follow 
-[Microsoft's Trademark & Brand Guidelines](https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks/usage/general).
+This project may contain trademarks or logos for projects, products, or services. Authorized use of Microsoft trademarks or logos is subject to and must follow [Microsoft's Trademark & Brand Guidelines](https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks/usage/general).
 Use of Microsoft trademarks or logos in modified versions of this project must not cause confusion or imply Microsoft sponsorship.
 Any use of third-party trademarks or logos are subject to those third-party's policies.
